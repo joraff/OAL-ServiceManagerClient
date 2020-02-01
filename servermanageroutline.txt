@@ -1,0 +1,25 @@
+Outline of Event Handling
+
+Login:
+	Network should be up, soap request should be successful
+	
+Logout:
+	Network may be down, may have to write to disk
+	If a true logout event, network will be up
+	If a logout in conjunction with a shutdown/restart, network will be down
+	
+Startup:
+	Network might be up, or will be up soon. Wait should be less than 10 seconds.
+	
+Shutdown/Restart:
+	Network will be down. Disk access will still be available
+	
+Power loss:
+	Network and disk will both be unavailable
+	
+	
+	
+Program for the worst case, which would be for a power loss. Once a starting event has been handled, begin a loop that subsequently writes parseable data to disk at a set interval. That data should include all the non-header related requestMap data (i.e. username, computername, IP, Mac, and a time.). Before beginning this loop, however, data that may have previously been written to disk should be checked and handled. Separate these into 3 methods: one to update ourselves with a new timestamp(update), one to handle writing the data to disk (write), and one to check for previous data (parse_previous).
+
+parse_previous:
+	should check if file exists (path will be set by a global), and if it does it should load the serialized data back into a dictionary (use json) for each line and add it to the event list (there could be more than one event in the file). 
